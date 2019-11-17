@@ -1,0 +1,532 @@
+<div class="header totvs-gradient-color pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row mt-5">
+    <div
+      class="col-xl-{{ modalData != null ? '8' : '12' }} mb-5 mb-xl-0"
+      style="transition: .9s;"
+    >
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <div
+            class="row align-items-center"
+            style="display: flex; align-items: center;"
+          >
+            <div class="col">
+              <h3 class="mb-0">Ultimas transferências</h3>
+            </div>
+            <div class="col-lg-3">
+              <form
+                class="navbar-search form-inline mr-2 d-none d-md-flex ml-lg-auto"
+              >
+                <div
+                  class="form-group mb-0"
+                  [ngClass]="{ focused: focus === true }"
+                >
+                  <div class="input-group input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="height: 30px;"
+                        ><i class="fas fa-search"></i
+                      ></span>
+                    </div>
+                    <input
+                      class="form-control"
+                      placeholder="Pesquisar"
+                      type="text"
+                      (input)="searchByField($event)"
+                      (focus)="focus = true"
+                      (blur)="focus = false"
+                      style="height: 30px; width: 200px"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col text-right">
+              <a
+                href=""
+                class="btn btn-sm btn-primary"
+                style="border: 0; border-radius: 20px; padding: 2px; padding-left: 8px; padding-right: 8px;"
+              >
+                <i class="fa fa-sync"></i>
+                ATUALIZAR</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <!-- Projects table -->
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">
+                  NOME
+                </th>
+                <th scope="col">
+                  DATA
+                </th>
+                <th scope="col">
+                  VALOR
+                </th>
+                <th scope="col">
+                  SITUAÇÃO
+                </th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of listOfDisplayData">
+                <td style="padding-left: 15px !important; ">
+                  {{ data.nomeFavorecido.substr(0, 27) | uppercase }}
+                </td>
+                <td>
+                  {{ data.dataTransferencia | date: "dd/MM/yyyy" }}
+                </td>
+                <td>R$ {{ toCurrency(data.valorTransferencia) }}</td>
+                <td>
+                  <div
+                    class="color-situacao-{{ data.situacaoTransferencia }}"
+                    style="font-size: 12px; text-transform:  capitalize; display: flex; justify-content: space-around; align-items: center; border-radius: 15px; padding: 2px; margin: auto"
+                  >
+                    {{ data.situacaoTransferencia }}
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <button
+                    (click)="modalData = data"
+                    class="btn btn-sm btn-primary totvs-gradiente-button"
+                    style="display: flex; align-items: center; align-self: center; margin: auto; "
+                  >
+                    <i _ngcontent-c6="" class="fa fa-eye"></i>
+                    <span style="margin-left: 3px;">Detalhes</span>
+                  </button>
+                </td>
+                <!-- <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-4">
+      <div
+        class="card shadow"
+        *ngIf="modalData != null"
+        [ngClass]="{ show: modalData != null }"
+      >
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <div class="col">
+              <div
+                style="display: flex; justify-content: space-between; align-items: center;"
+              >
+                <h6 class="text-uppercase text-muted ls-1 mb-1">Detalhe</h6>
+                <button
+                  class="btn btn-link"
+                  style="padding: 0;"
+                  (click)="hideDetail()"
+                >
+                  <i class="ni ni-fat-remove" style="font-size: 24px;"></i>
+                </button>
+              </div>
+              <h2 class="mb-0">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">
+                  valor da tranferência
+                </h6>
+                <h4 class="text-uppercase text-muted ls-1 mb-1">
+                  R$ {{ toCurrency(modalData.valorTransferencia) }}
+                </h4>
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div
+          class="card-body"
+          style="background-color: red ;padding: 0; max-height: 50vh; overflow-y: auto;"
+          id="detail"
+        >
+          <!-- Chart -->
+          <div style="display: flex; width: 100%;  ">
+            <div
+              style="display: flex; flex: 1;flex-direction: column; background-color: white; padding: 12px 12px 12px 12px; "
+            >
+              <div style="display: flex; justify-content: center;">
+                <h5>Conta de origem</h5>
+              </div>
+              <img
+                *ngIf="!!modalData"
+                src="{{
+                  'data:image/png;base64,' +
+                    modalData.empresaContaDTO.logoBancoBase64
+                }}"
+                class="full-width"
+              />
+              <div>
+                <span class="thin">Banco</span> <br />
+                <strong>
+                  {{
+                    modalData.empresaContaDTO?.nomeBanco.replace("BANCO ", "")
+                  }}
+                </strong>
+              </div>
+              <div class="line"></div>
+              <span class="thin small">
+                AG:
+                <strong>{{ modalData.empresaContaDTO?.nrAgencia }}</strong>
+              </span>
+              <span class="thin small">
+                CC:
+                <strong>{{ modalData.empresaContaDTO?.nrConta }}</strong>
+              </span>
+              <div class="line"></div>
+              <span class="thin small"
+                >Usuário requisitante<br />
+                <strong
+                  >{{ modalData.empresaContaDTO.nomeUsuario | uppercase }}
+                </strong>
+              </span>
+              <div class="line"></div>
+              <span class="thin small"
+                >Número da transação<br />
+                <strong> {{ modalData.id }} </strong>
+              </span>
+              <div class="line"></div>
+              <span class="thin small"
+                >Modalidade<br />
+                <strong> {{ modalData.modalidadeTransferencia }} </strong>
+              </span>
+              <div class="line"></div>
+              <span class="thin small"
+                >Data<br />
+                <strong>
+                  {{
+                    modalData.dataTransferencia | date: "dd/MM/yyyy hh:mm:ss"
+                  }}
+                </strong>
+              </span>
+              <div class="line"></div>
+              <span class="thin small"
+                >Finalidade<br />
+                <div style="font-size: 10px; overflow: hidden;">
+                  {{ modalData.descricaoFinalidade.substr(0, 20) }}
+                </div>
+              </span>
+              <div class="line"></div>
+              <span class="thin small"
+                >Situação<br />
+                <strong> {{ modalData.situacaoTransferencia }}</strong>
+              </span>
+            </div>
+            <div
+              style="display: flex; flex: 1;flex-direction: column; background-color: #4488dd; padding: 12px 12px 12px 12px; color: white"
+            >
+              <div style="display: flex; justify-content: center">
+                <h5 style="color: #fff;">Conta de destino</h5>
+              </div>
+              <img
+                *ngIf="
+                  !!modalData && modalData.logoBancoBase64Favorecido;
+                  else img_default
+                "
+                src="{{
+                  'data:image/png;base64,' + modalData.logoBancoBase64Favorecido
+                }}"
+                class="full-width"
+              />
+              <ng-template #img_default>
+                <img
+                  style="margin-top: 2px; margin-bottom: 0; opacity: .2;"
+                  src="./../../../assets/icons/bank.svg"
+                  class="full-width"
+                />
+              </ng-template>
+              <div>
+                <span class="thin">Banco</span> <br />
+                <strong>
+                  {{
+                    modalData.empresaContaDTO?.nomeBanco.replace("BANCO ", "")
+                  }}
+                </strong>
+              </div>
+              <div class="line"></div>
+              <span class="thin small">
+                AG:
+                <strong>{{ modalData.nrAgenciaFavorecido }}</strong>
+              </span>
+              <span class="thin small">
+                CC:
+                <strong>{{ modalData.nrContaFavorecido }}</strong>
+              </span>
+              <div class="line"></div>
+              <span class="thin small"
+                >Nome favorecido <br />{{ modalData.nomeFavorecido | uppercase
+                }}<br />
+              </span>
+              <div class="line"></div>
+              <span class="thin small">
+                CPF/CNPJ: <br />
+                {{ maskCpfCnpj(modalData.nrCnpjCpfFavorecido) }}</span
+              >
+              <div class="line"></div>
+              <div
+                style="display: flex; align-items: flex-end; justify-content: space-between; font-size: 12px;"
+              >
+                <span>
+                  VALOR
+                </span>
+                <span style="text-align:right; font-size: 12px;">
+                  <div
+                    class="thin dense"
+                    style="font-size: 12px; margin-top: 8px;"
+                  >
+                    R$
+                  </div>
+                  {{ toCurrency(modalData.valorTransferencia) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<nz-modal
+  *ngIf="!!modalData"
+  [nzVisible]="!!modalData"
+  nzTitle="Transferência"
+  nzOkText="Ok"
+  (nzOnCancel)="modalData = null"
+  nzMaskClosable
+  nzClosable
+  nzWidth="600"
+>
+  <nz-steps>
+    <nz-step
+      nzSubtitle="Pendente"
+      [nzStatus]="getIconProgress('PENDENTE', modalData.situacaoTransferencia)"
+      nzIcon="minus-circle"
+    ></nz-step>
+    <nz-step
+      [nzSubtitle]="
+        modalData.situacaoTransferencia != 'RECUSADO'
+          ? 'Processando'
+          : 'Recusado'
+      "
+      [nzStatus]="
+        getIconProgress('PROCESSANDO', modalData.situacaoTransferencia)
+      "
+      [nzIcon]="modalData.situacaoTransferencia != 'RECUSADO' && 'loading'"
+    ></nz-step>
+    <nz-step
+      nzSubtitle="Concluido"
+      [nzStatus]="getIconProgress('CONCLUIDO', modalData.situacaoTransferencia)"
+      nzIcon="check-circle"
+    ></nz-step>
+  </nz-steps>
+
+  <div class="window">
+    <div class="order-info">
+      <div class="order-info-content">
+        <h2>Conta de origem</h2>
+        <div class="line"></div>
+        <table class="order-table">
+          <tbody>
+            <tr>
+              <td>
+                <img
+                  *ngIf="!!modalData"
+                  src="{{
+                    'data:image/png;base64,' +
+                      modalData.empresaContaDTO.logoBancoBase64
+                  }}"
+                  class="full-width"
+                />
+                <br />
+                <div class="dashed">
+                  <span class="thin">Banco</span> <br />
+                  <strong>
+                    {{
+                      modalData.empresaContaDTO?.nomeBanco.replace("BANCO ", "")
+                    }}
+                  </strong>
+                </div>
+                <br />
+                <span class="thin small">
+                  AG:
+                  <strong>{{ modalData.empresaContaDTO?.nrAgencia }}</strong>
+                </span>
+
+                <br />
+                <span class="thin small">
+                  CC:
+                  <strong>{{ modalData.empresaContaDTO?.nrConta }}</strong>
+                </span>
+              </td>
+            </tr>
+            <div class="line"></div>
+            <tr>
+              <td>
+                <span class="thin">Usuário requisitante</span> <br />
+                {{ modalData.empresaContaDTO.nomeUsuario | uppercase }}<br />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="line"></div>
+
+
+
+        <div class="total">
+          <span style="display: flex; flex-direction: column;">
+            <div
+              class="thin dense"
+              style="display: flex; justify-content: space-between;"
+            >
+              <div>Transação</div>
+              <div style="font-size: 11px; overflow: hidden;">
+                {{ modalData.id }}
+              </div>
+            </div>
+            <div
+              class="thin dense"
+              style="display: flex; justify-content: space-between;"
+            >
+              <div>Modalidade</div>
+              <div style="font-size: 11px; overflow: hidden;">
+                {{ modalData.modalidadeTransferencia }}
+              </div>
+            </div>
+
+            <div
+              class="thin dense"
+              style="display: flex; justify-content: space-between;"
+            >
+              <div>Data</div>
+              <div style="font-size: 11px; overflow: hidden;">
+                {{ modalData.dataTransferencia | date: "dd/MM/yyyy" }}
+              </div>
+            </div>
+
+            <div
+              class="thin dense"
+              style="display: flex; justify-content: space-between;"
+            >
+              <div>Finalidade</div>
+              <div style="font-size: 10px; overflow: hidden;">
+                {{ modalData.descricaoFinalidade.substr(0, 15) }}
+              </div>
+            </div>
+
+            <div
+              class="thin dense"
+              style="display: flex; justify-content: space-between;"
+            >
+              <div>Situação</div>
+              <div style="font-size: 11px; overflow: hidden;">
+                {{ modalData.situacaoTransferencia }}
+              </div>
+            </div>
+
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="credit-info">
+      <div class="order-info-content">
+        <h2>Conta de destino</h2>
+        <div class="line"></div>
+        <table class="order-table">
+          <tbody>
+            <tr>
+              <td>
+                <img
+                  *ngIf="
+                    !!modalData && modalData.logoBancoBase64Favorecido;
+                    else img_default
+                  "
+                  src="{{
+                    'data:image/png;base64,' +
+                      modalData.logoBancoBase64Favorecido
+                  }}"
+                  class="full-width"
+                />
+                <ng-template #img_default>
+                  <img
+                    style="margin-top: 2px; margin-bottom: 5px; opacity: .2;"
+                    src="./../../../assets/icons/bank.svg"
+                    class="full-width"
+                  />
+                </ng-template>
+                <br />
+                <div class="dashed">
+                  <span class="thin">Banco</span> <br />
+                  <strong>
+                    {{ modalData.nomeBancoFavorecido.substr(0, 25) | uppercase }}
+                  </strong>
+                </div>
+                <br />
+
+                <span class="thin small">
+                  AG:
+                  <strong>{{ modalData.nrAgenciaFavorecido }}</strong>
+                </span>
+
+                <br />
+                <span class="thin small">
+                  CC:
+                  <strong>{{ modalData.nrContaFavorecido }}</strong>
+                </span>
+                <div class="line"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="order-table">
+          <tbody>
+            <tr>
+              <td>
+                <span class="thin">Nome favorecido</span> <br />
+                {{ modalData.nomeFavorecido | uppercase }}<br /><br />
+                <span class="thin small"> CPF/CNPJ: </span>
+                <span class="thin small">
+                  {{ maskCpfCnpj(modalData.nrCnpjCpfFavorecido) }}</span
+                >
+              </td>
+            </tr>
+            <tr>
+
+            </tr>
+          </tbody>
+        </table>
+        <div class="line"></div>
+        <div
+          class="total"
+          style="display: flex; align-items: flex-end; justify-content: space-between; font-size: 20px;"
+        >
+          <span>
+            VALOR
+          </span>
+          <span style="text-align:right; font-size: 20px;">
+            <div class="thin dense" style="margin-top: 15px;">
+              R$
+            </div>
+            {{ toCurrency(modalData.valorTransferencia) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *nzModalFooter>
+    <button nz-button nzType="danger" (click)="modalData = null">Fechar</button>
+  </div>
+</nz-modal> -->
