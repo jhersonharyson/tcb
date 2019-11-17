@@ -1,0 +1,147 @@
+nz-select {
+  width: 100%;
+}
+
+nz-month-picker {
+  width: 100%;
+}
+
+th,
+td {
+  text-align: center !important;
+}
+
+.card {
+  width: 450px;
+  position: absolute;
+  right: 25px;
+  bottom: 15px;
+  padding: 0;
+  background-color: #323232;
+  transition: 3s;
+  z-index: 101;
+  border-top: 1px solid #323232;
+  box-shadow: 1px 1px 5px #8c8c8c7a;
+}
+
+.container-header {
+  display: flex;
+  flex-direction: column;
+  transition: 3s;
+}
+
+.header {
+  background-color: #323232;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 15px;
+  padding-right: 15px;
+  transition: 1s;
+  margin-top: -3px;
+}
+
+.main-label {
+  color: #fff;
+  margin-top: 8px;
+}
+
+.arrow {
+  color: aliceblue;
+  transition: 0.3s;
+}
+
+.content {
+  display: flex;
+  height: 60px;
+  padding: 0;
+  align-items: flex-start;
+  flex-direction: column;
+  transition: 0.6s;
+  overflow: auto;
+}
+
+.minimize {
+  animation: mini 0.3s ease-in forwards;
+  overflow: hidden !important;
+}
+
+@keyframes mini {
+  to {
+    height: 0;
+  }
+  99% {
+    padding: 5px 15px;
+  }
+  100% {
+    padding: 0 15px;
+  }
+}
+
+.translate-card {
+  animation: translate-card 0.3s linear forwards;
+}
+
+@keyframes translate-card {
+  to {
+    bottom: 5px;
+  }
+}
+
+.minimize-header {
+  animation: mini-header 0.6s linear forwards;
+}
+
+@keyframes mini-header {
+  from {
+    height: 40px;
+  }
+  to {
+    height: 30px;
+  }
+}
+
+.maximize {
+  animation: maxi 0.3s linear forwards;
+  overflow: auto !important;
+}
+
+@keyframes maxi {
+  from {
+    height: 0;
+  }
+  to {
+    height: 60px;
+  }
+}
+
+.retranslate-card {
+  animation: retranslate-card 0.3s linear forwards;
+}
+
+@keyframes retranslate-card {
+  from {
+    bottom: 0;
+  }
+  to {
+    bottom: 15px;
+  }
+}
+
+.maximize-header {
+  animation: maxi-header 0.3s linear forwards;
+}
+
+@keyframes maxi-header {
+  from {
+    height: 40px;
+  }
+  to {
+    height: auto;
+  }
+}
+
+.ant-card-bordered {
+  border: 0;
+}

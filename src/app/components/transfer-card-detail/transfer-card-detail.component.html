@@ -1,0 +1,74 @@
+<div
+  #detail
+  *ngFor="let data of this.data; let i = index"
+  [style.backgroundColor]="i % 2 == 0 ? '#fff' : '#f9f9f9'"
+  class="container_detail"
+>
+  <div class="flex_container_row_line">
+    <div style="display: flex; flex: 1; margin-left: 5px">
+      <div class="flex_container_row_line avatar_origin">
+        <span class="avatar_label">O</span>
+      </div>
+    </div>
+    <div class="detail_container">
+      <div>
+        <span class="bank_label">{{ data.origin_bank }}</span>
+      </div>
+      <div class="flex_container_row">
+        <div>
+          <span class="bank_accounts">AG {{ data.origin_agency }}</span>
+        </div>
+        <div style="margin-left: 7px">
+          <span class="bank_accounts">C/C {{ data.origin_account }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="center_detail_transfer">
+      <div class="center_detail_transfer_container">
+        <img
+          src="./../../../assets/icons/icons_payment/payment.svg"
+          style="align-self: flex-start"
+          width="24"
+        />
+        <span style="font-size: 8px; color: #DF6666; font-weight: bold"
+          >R$ {{ data.transactioned_value }}</span
+        >
+        <img
+          src="./../../../assets/icons/icons_payment/receive.svg"
+          style="align-self: flex-end"
+          width="24"
+        />
+      </div>
+    </div>
+
+    <div class="flex_container">
+      <div class="avatar_target">
+        <span class="avatar_label">D</span>
+      </div>
+    </div>
+    <div class="detail_container">
+      <div>
+        <span class="bank_label">{{ data.target_bank }}</span>
+      </div>
+      <div class="flex_container_row">
+        <div>
+          <span class="bank_accounts">AG {{ data.target_agency }}</span>
+        </div>
+        <div style="margin-left: 7px">
+          <span class="bank_accounts">C/C {{ data.target_account }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="action_button">
+    <button
+      nz-button
+      nzShape="circle"
+      nzType="danger"
+      (click)="remove(data.transaction_id, detail)"
+    >
+      <i nz-icon nz-tooltip nzTooltipTitle="prompt text" nzType="delete"></i>
+    </button>
+  </div>
+</div>

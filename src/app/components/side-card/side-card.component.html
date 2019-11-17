@@ -1,0 +1,17 @@
+<nz-card *ngIf="show"
+         class="card"
+         [ngClass]=" state ? 'retranslate-card' :'translate-card' "
+         [nzBodyStyle]="{'padding': '0px', 'background-color': '#ffffff'}">
+  <div>
+    <div class="container-header">
+      <div class="header" [ngClass]="state ? 'maximize-header' : 'minimize-header'">
+        <h3 class="main-label">{{title}}</h3>
+        <a nz-icon [ngStyle]="{'transform': state ? '': 'rotate(180deg)'}" nzType="down" class="arrow"
+           (click)="toggle()"></a>
+      </div>
+      <div class="content" [ngClass]="state? 'maximize': 'minimize'" [ngStyle]="{'min-height': state ? (boxSize || '200px') : '0px'}">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</nz-card>
