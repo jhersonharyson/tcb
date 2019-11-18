@@ -16,6 +16,7 @@ import { TextMaskModule } from "angular2-text-mask";
 import { NzDatePickerModule } from "ng-zorro-antd/date-picker";
 import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzIconModule } from "ng-zorro-antd";
+import { NzRadioModule } from "ng-zorro-antd/radio";
 
 import { SideCardModule } from "./../../../components/side-card/side-card.module";
 import { TransferCardDetailModule } from "./../../../components/transfer-card-detail/transfer-card-detail.module";
@@ -43,6 +44,7 @@ import { MatSelectModule } from "@angular/material/select";
     NzSelectModule,
     SideCardModule,
     MatSelectModule,
+    NzRadioModule,
     TransferCardDetailModule
   ],
   declarations: [NewTransferComponent],

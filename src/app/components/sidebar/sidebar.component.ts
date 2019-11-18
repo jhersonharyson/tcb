@@ -14,6 +14,12 @@ export const ROUTES: RouteInfo[] = [
     icon: "ni-curved-next text-primary",
     class: ""
   },
+  {
+    path: "/transfer/new-transfer",
+    title: "Transferência > Nova",
+    icon: "ni-curved-next text-primary",
+    class: ""
+  },
   { path: "/icons", title: "Icons", icon: "ni-planet text-blue", class: "" },
   { path: "/maps", title: "Maps", icon: "ni-pin-3 text-orange", class: "" },
   {

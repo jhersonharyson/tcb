@@ -1,0 +1,234 @@
+<h2>Nova transferência</h2>
+<form [formGroup]="registerForm" id="form-field">
+  <div class="board">
+    <div class="left">
+      <div class="card">
+        <div class="card-content">
+          <h3 class="label-account">Conta de origem</h3>
+          <label>
+            {{ f.empresaContaDTO.value?.nomeBanco || "*************" }}
+          </label>
+          <label>
+            {{ f.empresaContaDTO.value?.nrAgencia || "00000" }}
+          </label>
+          <label>
+            {{ f.empresaContaDTO.value?.nrConta || "0000000" }}
+          </label>
+          <img height="24" src="./../../../assets/logos/logo.totvs.png" width="24"
+            style="filter: brightness(0) invert(1);" />
+        </div>
+        <div class="card-content-icon">
+          <img src="./../../../assets/icons/icons_payment/money.svg" style="width: 100%; height: 100%" />
+        </div>
+      </div>
+    </div>
+    <div class="center" style="margin-top: -200px">
+      <!-- <div class="wrapper">
+        <a href="#"
+          >Transferência<span class="arrow"><span></span></span
+        ></a>
+      </div> -->
+    </div>
+    <div class="right">
+      <div class="card">
+        <div class="card-content">
+          <h3 class="label-account">Conta de destino</h3>
+          <label>
+            {{ f.nrBancoFavorecido.value?.nomeBanco || "*************" }}
+          </label>
+          <label>
+            {{ f.nrAgenciaFavorecido.value || "00000" }}
+          </label>
+          <label>
+            {{ f.nrContaFavorecido.value || "0000000" }}
+          </label>
+          <img height="24" src="./../../../assets/logos/logo.totvs.png" width="24"
+            style="filter: brightness(0) invert(1);" />
+        </div>
+        <div class="card-content-icon">
+          <img src="./../../../assets/icons/icons_payment/bag.svg" style="width: 100%; height: 100%" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="board" style="background-color: transparent; box-shadow: none; margin-top: -150px; display: block;">
+    <!--  (submit)="save($event)" -->
+
+    <div style="    display: flex;
+    flex: 1;
+    margin-left: 10px;
+    margin-right: 10px;
+    align-items: flex-start;">
+      <div style="display: flex; flex: 1; align-items: flex-start;">
+        <mat-form-field style="width: 100%; alig">
+          <mat-label>Conta de origem</mat-label>
+          <mat-select class="form-control" (change)="changeFinalidade($event)" nzPlaceHolder="Conta"
+            formControlName="empresaContaDTO">
+            <mat-option *ngFor="let option of constasEmpresa['data']" [value]="option">
+              {{ "AG " + option.nrAgencia + " C/C " + option.nrConta }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div style="display: flex; flex: 1; flex-direction: column; margin-top: -10px">
+        <h3>VALOR</h3>
+        <input (blur)="formatCurrency($event, 'blur'); this.money = true" (keyup)="formatCurrency($event, null)"
+          (focus)="valueInput.value = 'R$ '" class="input-money" data-type="currency" id="currency-field" maxlength="15"
+          name="currency-field" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" type="text" value="R$ 00.00" #valueInput />
+
+        <mat-error class="invalid-feedback" *ngIf="submitted || f.valorTransferencia.pristine">
+          <!-- && this.money; else space -->
+          <!-- <div *ngIf="valueInput.value == 'R$ 00.00'">
+            Insira um valor.
+          </div> -->
+          <ng-template #space>
+            <div></div>
+          </ng-template>
+        </mat-error>
+      </div>
+      <div style="display: flex; flex: 1; flex-direction: column; align-items: center;">
+        <mat-form-field style="width: 100%; margin-bottom: -20px;">
+          <mat-label>Banco de destino</mat-label>
+          <mat-select class="form-control" nzPlaceHolder="Banco" formControlName="nrBancoFavorecido">
+            <mat-option *ngFor="let option of bancos['data']" [value]="option">
+              {{ option.nomeBanco }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div style="display: flex; flex: 1; justify-content: space-between; margin-top: 5px; width: 100%;">
+          <mat-form-field style="width: 80px">
+            <input matInput placeholder="Agência" type="text" class="form-control"
+              formControlName="nrAgenciaFavorecido" [value]="" />
+          </mat-form-field>
+
+          <mat-form-field style="width: 80px">
+            <input matInput placeholder="Conta" type="text" class="form-control" formControlName="nrContaFavorecido"
+              [value]="" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <mat-form-field style="margin-top: 10px;  width: 100%;">
+      <input matInput placeholder="Nome completo" type="text" class="form-control" formControlName="nomeFavorecido"
+        [value]="" [ngClass]="{ 'is-invalid': submitted && f.nomeFavorecido.errors }" />
+      <mat-error *ngIf="submitted || f.nomeFavorecido.errors" class="invalid-feedback">
+        <div *ngIf="f.nomeFavorecido.errors?.required" style="display: contents ">
+          Nome completo é necessário
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+    <div style="display: flex">
+      <div style="display: flex; flex: 3;  ">
+        <mat-form-field style="width: 100%;">
+          <!--{{ transfer.nrCnpjCpfFavorecido }}-->
+
+          <input matInput placeholder="CPF/CNPJ" type="text" formControlName="nrCnpjCpfFavorecido"
+            name="nrCnpjCpfFavorecido" class="form-control" value="{{ maskedId }}" (input)="format()" maxlength="18"
+            [ngClass]="{
+              'is-invalid': submitted && f.nrCnpjCpfFavorecido.errors
+            }" />
+          <mat-error *ngIf="submitted || f.nrCnpjCpfFavorecido.errors" class="invalid-feedback"
+            style="justify-content: flex-start;display: flex;">
+            <div *ngIf="f.nrCnpjCpfFavorecido.errors?.required">
+              CPF/CNPJ é necessário
+            </div>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div style="display: flex; flex: 2; ">
+        <mat-form-field>
+          <mat-label>Finalidade</mat-label>
+          <mat-select formControlName="codigoFinalidade" class="form-control" (change)="changeFinalidade($event)"
+            nzPlaceHolder="Finalidade">
+            <mat-option *ngFor="let option of finalidades['data']" [value]="option.id">
+              {{ option.descricaoFinalidade }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div style="display: flex; flex: 1; ">
+        <mat-form-field>
+          <mat-label>Modalidade</mat-label>
+          <mat-select class="form-control" (change)="changeFinalidade($event)" nzPlaceHolder="Modalidade"
+            formControlName="modalidadeTransferencia">
+            <mat-option *ngFor="let option of modalidades" [value]="option.descricao">
+              {{ option.descricao }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- <mat-form-field class="field-width">
+      <input
+        matInput
+        placeholder="Valor (R$)"
+        type="text"
+        class="form-control"
+        formControlName="valorTransferencia"
+        [value]=""
+      />
+    </mat-form-field> -->
+    <div style="display: flex; margin-top: 5px;">
+      <div
+        style="display: flex; flex-direction: column; flex: 1; justify-content: flex-start; align-items: flex-start;">
+        <label>Data de transferência:</label>
+
+        <!-- <input
+        matInput
+        placeholder=""
+        type="text"
+        class="form-control"
+        formControlName="dataTransferencia"
+        value="{{dataTransferencia | date:'dd/MM/yyyy'}}"
+        disabled = "true" /> -->
+
+        <nz-date-picker nzShowToday style="width: 100%" nzFormat="dd/MM/yyyy" formControlName="dataTransferencia"
+          (ngModelChange)="onChange($event)" nzDisabled="true" nzPlaceHolder="{{dataHoje | date: 'dd/MM/yyyy'}}">
+        </nz-date-picker>
+        <mat-error *ngIf="submitted || f.dataTransferencia.errors" class="invalid-feedback"
+          style="justify-content: flex-start;display: flex;">
+          <div *ngIf="
+              f.dataTransferencia.errors?.required && f.dataTransferencia.dirty
+            ">
+            Data é Necessário
+          </div>
+        </mat-error>
+      </div>
+      <div style="display: flex; flex: 1"></div>
+    </div>
+    <div class="form-group-button">
+      <div style="width: 220px; display: flex; justify-content: space-between">
+        <button class="bbutton" (click)="showConfirm(templateName)" nz-button nzType="primary">
+          TRANSFERIR
+        </button>
+        <a routerLink="/transfer">
+          <button class="bbutton-desistir" nz-button nzType="danger">
+            DESISTIR
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</form>
+<app-side-card [show]="this.data_detail.length" boxSize="350px" title="transferências">
+  <!--  <div style="width: 100%; display: flex; position: static; top: 0; z-index: 100 ">-->
+
+  <!--    <span style="display: flex; justify-content: center; flex: 1; border-bottom: 1px solid #e6e6e6; font-size: 12px">ORIGEM</span><span-->
+  <!--    style="display: flex; justify-content: center; flex: 1; border-bottom: 1px solid #e6e6e6; font-size: 12px">DESTINO</span>-->
+
+  <!--  </div>-->
+  <app-transfer-card-detail style="width: 100%;" [data]="this.data_detail"></app-transfer-card-detail>
+</app-side-card>
+
+<ng-template #templateName>
+  <div style="margin-left: -38px;">
+    <div style="text-align: center;">{{f.nomeFavorecido.value}}/ CPF: {{f.nrCnpjCpfFavorecido.value}}</div>
+    <div style="text-align: center;">{{f.empresaContaDTO.value?.nomeBanco}}/ Ag: {{f.empresaContaDTO.value?.nrAgencia }}
+    </div>
+    <div style="font-size: 17px; text-align: center; "><strong>{{valueInput.value}}</strong></div>
+  </div>
+</ng-template>

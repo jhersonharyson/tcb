@@ -1,338 +1,606 @@
-<h2>Nova transferência</h2>
-<form [formGroup]="registerForm" id="form-field">
-  <div class="board">
-    <div class="left">
-      <div class="card">
-        <div class="card-content">
-          <h3 class="label-account">Conta de origem</h3>
-          <label>
-            {{ f.empresaContaDTO.value?.nomeBanco || "*************" }}
-          </label>
-          <label>
-            {{ f.empresaContaDTO.value?.nrAgencia || "00000" }}
-          </label>
-          <label>
-            {{ f.empresaContaDTO.value?.nrConta || "0000000" }}
-          </label>
-          <img
-            height="24"
-            src="./../../../assets/logos/logo.totvs.png"
-            width="24"
-            style="filter: brightness(0) invert(1);"
-          />
-        </div>
-        <div class="card-content-icon">
-          <img
-            src="./../../../assets/icons/icons_payment/money.svg"
-            style="width: 100%; height: 100%"
-          />
-        </div>
-      </div>
+<div class="header totvs-gradient-color pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
     </div>
-    <div class="center" style="margin-top: -200px">
-      <!-- <div class="wrapper">
-        <a href="#"
-          >Transferência<span class="arrow"><span></span></span
-        ></a>
-      </div> -->
-    </div>
-    <div class="right">
-      <div class="card">
-        <div class="card-content">
-          <h3 class="label-account">Conta de destino</h3>
-          <label>
-            {{ f.nrBancoFavorecido.value?.nomeBanco || "*************" }}
-          </label>
-          <label>
-            {{ f.nrAgenciaFavorecido.value || "00000" }}
-          </label>
-          <label>
-            {{ f.nrContaFavorecido.value || "0000000" }}
-          </label>
-          <img
-            height="24"
-            src="./../../../assets/logos/logo.totvs.png"
-            width="24"
-            style="filter: brightness(0) invert(1);"
-          />
-        </div>
-        <div class="card-content-icon">
-          <img
-            src="./../../../assets/icons/icons_payment/bag.svg"
-            style="width: 100%; height: 100%"
-          />
+  </div>
+</div>
+<form nz-form [formGroup]="registerForm" id="form-field">
+  <div class="container-fluid mt--7">
+    <div class="row mt-5">
+      <div class="col-xl-12 mb-5 mb-xl-0" style="transition: .9s;">
+        <div class="card bg-secondary">
+          <div class="card-header bg-white border-0">
+            <div class="row align-items-center">
+              <div class="col-8"><h3 class="mb-0">Nova transferência</h3></div>
+              <div class="col-4 text-right">
+                <!-- <a class="btn btn-sm btn-primary" href="#!">dados da trnasferência</a> -->
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h6 class="heading-small text-muted mb-4">
+              dados da conta
+            </h6>
+
+            <div class="row">
+              <div class="col-xl-6">
+                <div
+                  class="board"
+                  style="display: flex; flex-direction: column; justify-content: center;"
+                >
+                  <div
+                    class="left"
+                    style="display: flex; justify-content: center;"
+                  >
+                    <div
+                      class="cred-card"
+                      style="margin-top: -85px; margin-bottom: 0px;"
+                    >
+                      <div class="card-content">
+                        <h3 class="label-account">Conta de origem</h3>
+                        <label>
+                          {{
+                            f.empresaContaDTO.value?.nomeBanco ||
+                              "*************"
+                          }}
+                        </label>
+                        <label>
+                          {{ f.empresaContaDTO.value?.nrAgencia || "00000" }}
+                        </label>
+                        <label>
+                          {{ f.empresaContaDTO.value?.nrConta || "0000000" }}
+                        </label>
+                        <img
+                          height="24"
+                          src="./../../../assets/logos/logo.totvs.png"
+                          width="24"
+                          style="filter: brightness(0) invert(1); margin-top: 10px;"
+                        />
+                      </div>
+                      <div class="card-content-icon">
+                        <img
+                          src="./../../../assets/icons/icons_payment/money.svg"
+                          style="width: 100%; height: 100%"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 95%; padding-bottom: 110px;">
+                    <nz-form-item style="width: 100%; margin-top: 10px">
+                      <label class="form-control-label" for="input-username"
+                        >Conta de origem</label
+                      >
+                      <nz-form-control
+                        nzErrorTip="Selecione o banco de destino!"
+                      >
+                        <nz-select
+                          style="width: 100%;"
+                          nzPlaceHolder="Conta"
+                          formControlName="empresaContaDTO"
+                          nzSize="large"
+                        >
+                          <nz-option
+                            *ngFor="let option of [1, 2, 3, 4, 5, 6]"
+                            [nzLabel]="
+                              'AG ' +
+                              option.nrAgencia +
+                              ' C/C ' +
+                              option.nrConta
+                            "
+                            [nzValue]="option"
+                          ></nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-6">
+                <div
+                  class="board"
+                  style="display: flex; flex-direction: column; justify-content: center;"
+                >
+                  <div
+                    class="right"
+                    style="display: flex; justify-content: center;"
+                  >
+                    <div
+                      class="cred-card"
+                      style="margin-top: -85px; margin-bottom: 0px;"
+                    >
+                      <div class="card-content">
+                        <h3 class="label-account">Conta de destino</h3>
+                        <label>
+                          {{
+                            f.nrBancoFavorecido.value?.nomeBanco ||
+                              "*************"
+                          }}
+                        </label>
+                        <label>
+                          {{ f.nrAgenciaFavorecido.value || "00000" }}
+                        </label>
+                        <label>
+                          {{ f.nrContaFavorecido.value || "0000000" }}
+                        </label>
+                        <img
+                          height="24"
+                          src="./../../../assets/logos/logo.totvs.png"
+                          width="24"
+                          style="filter: brightness(0) invert(1); margin-top: 10px;"
+                        />
+                      </div>
+                      <div class="card-content-icon">
+                        <img
+                          src="./../../../assets/icons/icons_payment/bag.svg"
+                          style="width: 100%; height: 100%"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 95%; padding-bottom: 10px">
+                    <div
+                      style="display: flex; flex: 1; flex-direction: column; align-items: center;"
+                    >
+                      <nz-form-item style="width: 100%; margin-top: 10px">
+                        <label class="form-control-label" for="input-username"
+                          >Banco de destino</label
+                        >
+                        <nz-form-control
+                          nzErrorTip="Selecione o banco de destino!"
+                        >
+                          <nz-select
+                            style="width: 100%;"
+                            nzPlaceHolder="Selecione um banco"
+                            formControlName="nrBancoFavorecido"
+                            nzSize="large"
+                          >
+                            <nz-option
+                              *ngFor="let option of [1, 2, 3, 4, 5, 6]"
+                              [nzLabel]="option.nomeBanco"
+                              [nzValue]="option"
+                            ></nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+
+                      <div
+                        style="display: flex; flex: 1; justify-content: space-between; margin-top: 5px; width: 100%;"
+                      >
+                        <nz-form-item style="width: 49%;">
+                          <label class="form-control-label" for="input-username"
+                            >Agência de destino</label
+                          >
+                          <nz-form-control
+                            nzErrorTip="Informe a agência de destino!"
+                          >
+                            <input
+                              nz-input
+                              placeholder="Agência"
+                              formControlName="nrAgenciaFavorecido"
+                              [value]=""
+                              nzSize="large"
+                            />
+                          </nz-form-control>
+                        </nz-form-item>
+
+                        <nz-form-item style="width: 49%;">
+                          <label class="form-control-label" for="input-username"
+                            >Conta de destino</label
+                          >
+                          <nz-form-control
+                            nzErrorTip="Informe a conta de destino!"
+                          >
+                            <input
+                              nz-input
+                              placeholder="Selecione uma conta"
+                              class="form-control"
+                              formControlName="nrContaFavorecido"
+                              [value]=""
+                              nzSize="large"
+                            />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-4" />
+            <h6 class="heading-small text-muted mb-4">
+              dados da transferência
+            </h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div>
+                    <label class="form-control-label" for="input-username"
+                      >Nome do favorecido</label
+                    >
+                    <nz-form-item>
+                      <nz-form-control
+                        nzErrorTip="Ops... O nome é obrigatório!"
+                      >
+                        <input
+                          nz-input
+                          formControlName="nomeFavorecido"
+                          placeholder="Ex: Enzo Gabriel"
+                          nzSize=""
+                          type="email"
+                          nzSize="large"
+                        />
+                      </nz-form-control>
+                    </nz-form-item>
+
+                    <!-- <nz-form-control
+                      [nzSpan]="8"
+                      nzErrorTip="Please input your name"
+                      nzHasFeedback
+                    >
+                      <input
+                        nz-input
+                        nzSize="large"
+                        placeholder="Nome completo"
+                        type="text"
+                        class="form-control"
+                        formControlName="nomeFavorecido"
+                        required
+                        [value]=""
+                        [ngClass]="{
+                          'is-invalid': submitted && f.nomeFavorecido.errors
+                        }"
+                      />
+                    </nz-form-control> -->
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-email"
+                      >CPF/CNPJ</label
+                    >
+                    <nz-form-item>
+                      <nz-form-control nzErrorTip="Informe um CPF ou CNPJ!">
+                        <input
+                          nz-input
+                          placeholder="Ex: 012.345.678-90"
+                          formControlName="nrCnpjCpfFavorecido"
+                          name="nrCnpjCpfFavorecido"
+                          value="{{ maskedId }}"
+                          (input)="format()"
+                          maxlength="18"
+                          nzSize="large"
+                        />
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <nz-form-item style="width: 100%; margin-top: 10px">
+                      <label class="form-control-label" for="input-username"
+                        >Finalidade</label
+                      >
+                      <nz-form-control nzErrorTip="Selecione uma finalidade!">
+                        <nz-select
+                          style="width: 100%;"
+                          nzPlaceHolder="Selecione uma finalidade"
+                          formControlName="codigoFinalidade"
+                          nzSize="large"
+                        >
+                          <!-- finalidades['data'] -->
+                          <nz-option
+                            *ngFor="let option of [1, 2, 3, 4, 5, 6]"
+                            [nzLabel]="option.descricaoFinalidade"
+                            [nzValue]="option.id"
+                          ></nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="form-group col-lg-5">
+                      <nz-form-item style="width: 100%; margin-top: 10px">
+                        <label class="form-control-label" for="input-last-name"
+                          >Modalidade</label
+                        >
+                        <nz-form-control nzErrorTip="Selecione uma finalidade!">
+                          <nz-radio-group nzSize="large" style="display: flex;">
+                            <label nz-radio-button nzValue="TED">TED</label>
+                            <label nz-radio-button [nzValue]="null" nzDisabled
+                              >DOC</label
+                            >
+                          </nz-radio-group>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div class="form-group col-lg-7">
+                      <nz-form-item style="width: 100%; margin-top: 10px">
+                        <label class="form-control-label" for="input-last-name"
+                          >Data da tranferência</label
+                        >
+                        <nz-form-control nzErrorTip="Selecione uma finalidade!">
+                          <nz-radio-group nzSize="large">
+                            <label nz-radio-button nzValue="dataHoje"
+                              >HOJE</label
+                            >
+
+                            <label nz-radio-button [nzValue]="null" nzDisabled
+                              >AGENDAR</label
+                            >
+                          </nz-radio-group>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-4" />
+            <h6 class="heading-small text-muted mb-4">
+              Contact information
+            </h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-address"
+                      >Address</label
+                    ><input
+                      class="form-control form-control-alternative"
+                      id="input-address"
+                      placeholder="Home Address"
+                      type="text"
+                      value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-city"
+                      >City</label
+                    ><input
+                      class="form-control form-control-alternative"
+                      id="input-city"
+                      placeholder="City"
+                      type="text"
+                      value="New York"
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country"
+                      >Country</label
+                    ><input
+                      class="form-control form-control-alternative"
+                      id="input-country"
+                      placeholder="Country"
+                      type="text"
+                      value="United States"
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country"
+                      >Postal code</label
+                    ><input
+                      class="form-control form-control-alternative"
+                      id="input-postal-code"
+                      placeholder="Postal code"
+                      type="number"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-4" />
+            <h6 class="heading-small text-muted mb-4">About me</h6>
+            <div class="pl-lg-4">
+              <div class="form-group">
+                <label>About Me</label
+                ><textarea
+                  class="form-control form-control-alternative"
+                  placeholder="A few words about you ..."
+                  rows="4"
+                >
+A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
+                >
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div
-    class="board"
-    style="background-color: transparent; box-shadow: none; margin-top: -150px; display: block;"
-  >
-    <!--  (submit)="save($event)" -->
-
+  <div class="col-xl-4">
     <div
-      style="    display: flex;
-    flex: 1;
-    margin-left: 10px;
-    margin-right: 10px;
-    align-items: flex-start;"
+      class="card shadow"
+      *ngIf="modalData != null"
+      [ngClass]="{ show: modalData != null }"
     >
-      <div style="display: flex; flex: 1; align-items: flex-start;">
-        <mat-form-field style="width: 100%; alig">
-          <mat-label>Conta de origem</mat-label>
-          <mat-select
-            class="form-control"
-            (change)="changeFinalidade($event)"
-            nzPlaceHolder="Conta"
-            formControlName="empresaContaDTO"
-          >
-            <mat-option
-              *ngFor="let option of constasEmpresa['data']"
-              [value]="option"
+      <div class="card-header bg-transparent">
+        <div class="row align-items-center">
+          <div class="col">
+            <div
+              style="display: flex; justify-content: space-between; align-items: center;"
             >
-              {{ "AG " + option.nrAgencia + " C/C " + option.nrConta }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div
-        style="display: flex; flex: 1; flex-direction: column; margin-top: -10px"
-      >
-        <h3>VALOR</h3>
-        <input
-          (blur)="formatCurrency($event, 'blur'); this.money = true"
-          (keyup)="formatCurrency($event, null)"
-          (focus)="valueInput.value = 'R$ '"
-          class="input-money"
-          data-type="currency"
-          id="currency-field"
-          maxlength="15"
-          name="currency-field"
-          pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
-          type="text"
-          value="R$ 00.00"
-          #valueInput
-        />
-
-        <mat-error
-          class="invalid-feedback"
-          *ngIf="submitted || f.valorTransferencia.pristine"
-        >
-          <!-- && this.money; else space -->
-          <!-- <div *ngIf="valueInput.value == 'R$ 00.00'">
-            Insira um valor.
-          </div> -->
-          <ng-template #space>
-            <div></div>
-          </ng-template>
-        </mat-error>
-      </div>
-      <div
-        style="display: flex; flex: 1; flex-direction: column; align-items: center;"
-      >
-        <mat-form-field style="width: 100%; margin-bottom: -20px;">
-          <mat-label>Banco de destino</mat-label>
-          <mat-select
-            class="form-control"
-            nzPlaceHolder="Banco"
-            formControlName="nrBancoFavorecido"
-          >
-            <mat-option *ngFor="let option of bancos['data']" [value]="option">
-              {{ option.nomeBanco }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div
-          style="display: flex; flex: 1; justify-content: space-between; margin-top: 5px; width: 100%;"
-        >
-          <mat-form-field style="width: 80px">
-            <input
-              matInput
-              placeholder="Agência"
-              type="text"
-              class="form-control"
-              formControlName="nrAgenciaFavorecido"
-              [value]=""
-            />
-          </mat-form-field>
-
-          <mat-form-field style="width: 80px">
-            <input
-              matInput
-              placeholder="Conta"
-              type="text"
-              class="form-control"
-              formControlName="nrContaFavorecido"
-              [value]=""
-            />
-          </mat-form-field>
-        </div>
-      </div>
-    </div>
-
-    <mat-form-field style="margin-top: 10px;  width: 100%;">
-      <input
-        matInput
-        placeholder="Nome completo"
-        type="text"
-        class="form-control"
-        formControlName="nomeFavorecido"
-        [value]=""
-        [ngClass]="{ 'is-invalid': submitted && f.nomeFavorecido.errors }"
-      />
-      <mat-error
-        *ngIf="submitted || f.nomeFavorecido.errors"
-        class="invalid-feedback"
-      >
-        <div
-          *ngIf="f.nomeFavorecido.errors?.required"
-          style="display: contents "
-        >
-          Nome completo é necessário
-        </div>
-      </mat-error>
-    </mat-form-field>
-
-    <div style="display: flex">
-      <div style="display: flex; flex: 3;  ">
-        <mat-form-field style="width: 100%;">
-          <!--{{ transfer.nrCnpjCpfFavorecido }}-->
-
-          <input
-            matInput
-            placeholder="CPF/CNPJ"
-            type="text"
-            formControlName="nrCnpjCpfFavorecido"
-            name="nrCnpjCpfFavorecido"
-            class="form-control"
-            value="{{ maskedId }}"
-            (input)="format()"
-            maxlength="18"
-            [ngClass]="{
-              'is-invalid': submitted && f.nrCnpjCpfFavorecido.errors
-            }"
-          />
-          <mat-error
-            *ngIf="submitted || f.nrCnpjCpfFavorecido.errors"
-            class="invalid-feedback"
-            style="justify-content: flex-start;display: flex;"
-          >
-            <div *ngIf="f.nrCnpjCpfFavorecido.errors?.required">
-              CPF/CNPJ é necessário
+              <h6 class="text-uppercase text-muted ls-1 mb-1">Detalhe</h6>
+              <button
+                class="btn btn-link"
+                style="padding: 0;"
+                (click)="hideDetail()"
+              >
+                <i class="ni ni-fat-remove" style="font-size: 24px;"></i>
+              </button>
             </div>
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div style="display: flex; flex: 2; ">
-        <mat-form-field>
-          <mat-label>Finalidade</mat-label>
-          <mat-select
-            formControlName="codigoFinalidade"
-            class="form-control"
-            (change)="changeFinalidade($event)"
-            nzPlaceHolder="Finalidade"
-          >
-            <mat-option
-              *ngFor="let option of finalidades['data']"
-              [value]="option.id"
-            >
-              {{ option.descricaoFinalidade }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div style="display: flex; flex: 1; ">
-        <mat-form-field>
-          <mat-label>Modalidade</mat-label>
-          <mat-select
-            class="form-control"
-            (change)="changeFinalidade($event)"
-            nzPlaceHolder="Modalidade"
-            formControlName="modalidadeTransferencia"
-          >
-            <mat-option
-              *ngFor="let option of modalidades"
-              [value]="option.descricao"
-            >
-              {{ option.descricao }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <!-- <mat-form-field class="field-width">
-      <input
-        matInput
-        placeholder="Valor (R$)"
-        type="text"
-        class="form-control"
-        formControlName="valorTransferencia"
-        [value]=""
-      />
-    </mat-form-field> -->
-    <div style="display: flex; margin-top: 5px;">
-      <div
-        style="display: flex; flex-direction: column; flex: 1; justify-content: flex-start; align-items: flex-start;"
-      >
-        <label>Data de transferência:</label>
-
-        <!-- <input
-        matInput
-        placeholder=""
-        type="text"
-        class="form-control"
-        formControlName="dataTransferencia"
-        value="{{dataTransferencia | date:'dd/MM/yyyy'}}"
-        disabled = "true" /> -->
-
-        <nz-date-picker
-          nzShowToday
-          style="width: 100%"
-          nzFormat="dd/MM/yyyy"
-          formControlName="dataTransferencia"
-          (ngModelChange)="onChange($event)"
-          nzDisabled="true"
-          nzPlaceHolder="{{ dataHoje | date: 'dd/MM/yyyy' }}"
-        >
-        </nz-date-picker>
-        <mat-error
-          *ngIf="submitted || f.dataTransferencia.errors"
-          class="invalid-feedback"
-          style="justify-content: flex-start;display: flex;"
-        >
-          <div
-            *ngIf="
-              f.dataTransferencia.errors?.required && f.dataTransferencia.dirty
-            "
-          >
-            Data é Necessário
+            <h2 class="mb-0">
+              <h6 class="text-uppercase text-muted ls-1 mb-1">
+                valor da tranferência nº {{ modalData.id }}
+              </h6>
+              <h4 class="text-uppercase text-muted ls-1 mb-1">
+                R$ {{ toCurrency(modalData.valorTransferencia) }}
+              </h4>
+            </h2>
           </div>
-        </mat-error>
+        </div>
       </div>
-      <div style="display: flex; flex: 1"></div>
-    </div>
-    <div class="form-group-button">
-      <div style="width: 220px; display: flex; justify-content: space-between">
-        <button
-          class="bbutton"
-          (click)="showConfirm(templateName)"
-          nz-button
-          nzType="primary"
-        >
-          TRANSFERIR
-        </button>
-        <a routerLink="/transfer">
-          <button class="bbutton-desistir" nz-button nzType="danger">
-            DESISTIR
-          </button>
-        </a>
+      <div
+        class="card-body"
+        style="background-color: red ;padding: 0; max-height: 50vh; overflow-y: auto;"
+        id="detail"
+      >
+        <!-- Chart -->
+        <div style="display: flex; width: 100%;  ">
+          <div
+            style="display: flex; flex: 1;flex-direction: column; background-color: white; padding: 12px 12px 12px 12px; "
+          >
+            <div style="display: flex; justify-content: center;">
+              <h5>Conta de origem</h5>
+            </div>
+            <img
+              *ngIf="!!modalData"
+              src="{{
+                'data:image/png;base64,' +
+                  modalData.empresaContaDTO.logoBancoBase64
+              }}"
+              class="full-width"
+            />
+            <div>
+              <span class="thin">Banco</span> <br />
+              <strong>
+                {{ modalData.empresaContaDTO?.nomeBanco.replace("BANCO ", "") }}
+              </strong>
+            </div>
+            <div class="line"></div>
+            <span class="thin small">
+              AG:
+              <strong>{{ modalData.empresaContaDTO?.nrAgencia }}</strong>
+            </span>
+            <span class="thin small">
+              CC:
+              <strong>{{ modalData.empresaContaDTO?.nrConta }}</strong>
+            </span>
+            <div class="line"></div>
+            <span class="thin small"
+              >Usuário requisitante<br />
+              <strong
+                >{{ modalData.empresaContaDTO.nomeUsuario | uppercase }}
+              </strong>
+            </span>
+            <div class="line"></div>
+            <span class="thin small"
+              >Número da transação<br />
+              <strong> {{ modalData.id }} </strong>
+            </span>
+            <div class="line"></div>
+            <span class="thin small"
+              >Modalidade<br />
+              <strong> {{ modalData.modalidadeTransferencia }} </strong>
+            </span>
+            <div class="line"></div>
+            <span class="thin small"
+              >Data<br />
+              <strong>
+                {{ modalData.dataTransferencia | date: "dd/MM/yyyy hh:mm:ss" }}
+              </strong>
+            </span>
+            <div class="line"></div>
+            <span class="thin small"
+              >Finalidade<br />
+              <div style="font-size: 10px; overflow: hidden;">
+                {{ modalData.descricaoFinalidade.substr(0, 20) }}
+              </div>
+            </span>
+            <div class="line"></div>
+            <span class="thin small"
+              >Situação<br />
+              <strong> {{ modalData.situacaoTransferencia }}</strong>
+            </span>
+          </div>
+          <div
+            style="display: flex; flex: 1;flex-direction: column; background-color: #4488dd; padding: 12px 12px 12px 12px; color: white"
+          >
+            <div style="display: flex; justify-content: center">
+              <h5 style="color: #fff;">Conta de destino</h5>
+            </div>
+            <img
+              *ngIf="
+                !!modalData && modalData.logoBancoBase64Favorecido;
+                else img_default
+              "
+              src="{{
+                'data:image/png;base64,' + modalData.logoBancoBase64Favorecido
+              }}"
+              class="full-width"
+            />
+            <ng-template #img_default>
+              <img
+                style="margin-top: 2px; margin-bottom: 0; opacity: .2;"
+                src="./../../../assets/icons/bank.svg"
+                class="full-width"
+              />
+            </ng-template>
+            <div>
+              <span class="thin">Banco</span> <br />
+              <strong>
+                {{ modalData.empresaContaDTO?.nomeBanco.replace("BANCO ", "") }}
+              </strong>
+            </div>
+            <div class="line"></div>
+            <span class="thin small">
+              AG:
+              <strong>{{ modalData.nrAgenciaFavorecido }}</strong>
+            </span>
+            <span class="thin small">
+              CC:
+              <strong>{{ modalData.nrContaFavorecido }}</strong>
+            </span>
+            <div class="line"></div>
+            <span class="thin small"
+              >Nome favorecido <br />{{ modalData.nomeFavorecido | uppercase
+              }}<br />
+            </span>
+            <div class="line"></div>
+            <span class="thin small">
+              CPF/CNPJ: <br />
+              {{ maskCpfCnpj(modalData.nrCnpjCpfFavorecido) }}</span
+            >
+            <div class="line"></div>
+            <div
+              style="display: flex; align-items: flex-end; justify-content: space-between; font-size: 12px;"
+            >
+              <span>
+                VALOR
+              </span>
+              <span style="text-align:right; font-size: 12px;">
+                <div
+                  class="thin dense"
+                  style="font-size: 12px; margin-top: 8px;"
+                >
+                  R$
+                </div>
+                {{ toCurrency(modalData.valorTransferencia) }}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </form>
+<button (click)="showConfirm(templateName)">
+  asdasd
+</button>
+
 <app-side-card
   [show]="this.data_detail.length"
   boxSize="350px"

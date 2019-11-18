@@ -1,9 +1,9 @@
-import { async } from '@angular/core/testing';
-import { ModelDataTransferDetail } from './../../../domain/model-data-transfer-detail';
+import { async } from "@angular/core/testing";
+import { ModelDataTransferDetail } from "./../../../domain/model-data-transfer-detail";
 import { ContasEmpresaService } from "./../../../services/contas-empresa.service";
 import { BancoService } from "./../../../services/banco.service";
 import { Banco } from "./../../../domain/banco";
-import { Component, OnInit , TemplateRef } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Transfer } from "src/app/domain/transfer";
@@ -13,15 +13,14 @@ import { Finalidade } from "src/app/domain/finalidade";
 import { FinalidadeService } from "src/app/services/finalidade.service";
 import { EmpresaContaDTO } from "src/app/domain/conta";
 import { NzNotificationService } from "ng-zorro-antd";
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from "ng-zorro-antd/modal";
 
 @Component({
   selector: "app-new-transfer",
   templateUrl: "./new-transfer.component.html",
-  styleUrls: ["./new-transfer.component.css"]
+  styleUrls: ["./new-transfer.component.scss"]
 })
 export class NewTransferComponent implements OnInit {
-
   cnpjmask = [
     /\d/,
     /\d/,
@@ -70,9 +69,7 @@ export class NewTransferComponent implements OnInit {
 
   dataHoje = new Date();
 
-  modalidades = [
-    { descricao: "TED" }
-  ];
+  modalidades = [{ descricao: "TED" }];
 
   confirmModal: NzModalRef; // For testing by now
 
@@ -84,8 +81,8 @@ export class NewTransferComponent implements OnInit {
     private bancoService: BancoService,
     private contaEmpresaService: ContasEmpresaService,
     private modal: NzModalService,
-    private notification: NzNotificationService,
-  ) { }
+    private notification: NzNotificationService
+  ) {}
 
   get f() {
     return this.registerForm.controls;
@@ -132,7 +129,6 @@ export class NewTransferComponent implements OnInit {
   }
 
   changeFinalidade(e) {
-
     this.codigoFinalidade.setValue(e.target.value, {
       onlySelf: true
     });
@@ -176,8 +172,11 @@ export class NewTransferComponent implements OnInit {
       valorTransferencia: [transfer.valorTransferencia],
       dataTransferencia: [transfer.dataTransferencia],
       codigoFinalidade: [transfer.codigoFinalidade, [Validators.required]],
-      modalidadeTransferencia: [transfer.modalidadeTransferencia, [Validators.required]],
-      empresaContaDTO: [transfer.empresaContaDTO, [Validators.required]],
+      modalidadeTransferencia: [
+        transfer.modalidadeTransferencia,
+        [Validators.required]
+      ],
+      empresaContaDTO: [transfer.empresaContaDTO, [Validators.required]]
     });
   }
 
@@ -189,21 +188,18 @@ export class NewTransferComponent implements OnInit {
   carregaFinalidades() {
     return this.finalidadeService.findAll().subscribe(finalidades => {
       this.finalidades = finalidades;
-
     });
   }
 
   carregaContasEmpresa() {
     return this.contaEmpresaService.findAll().subscribe(constasEmpresa => {
       this.constasEmpresa = constasEmpresa;
-
     });
   }
 
   carregaBancos() {
     return this.bancoService.findAll().subscribe(bancos => {
       this.bancos = bancos;
-
     });
   }
 
@@ -225,15 +221,19 @@ export class NewTransferComponent implements OnInit {
   //    //this.registerForm.reset(new Transfer());
   //  }
 
-
-  showConfirm(contentTemplate :  TemplateRef<{}>) {
-
-
-    const valorTransacaoValidacao = document.getElementById('currency-field')
+  showConfirm(contentTemplate: TemplateRef<{}>) {
+    const valorTransacaoValidacao = document.getElementById("currency-field");
     // @ts-ignore
-    this.registerForm.value['valorTransferencia'] = new Number(valorTransacaoValidacao.value.replace('R$ ', '').replace(/\./g, '').replace(',', '.'))
+    this.registerForm.value["valorTransferencia"] = new Number(
+      // @ts-ignore
+      valorTransacaoValidacao.value
+        .replace("R$ ", "")
+        .replace(/\./g, "")
+        .replace(",", ".")
+    );
 
-    this.registerForm.value['dataTransferencia'] = this.dataHoje
+    this.registerForm.value["dataTransferencia"] = this.dataHoje;
+    this.registerForm.value["modalidadeTransferencia"] = "TED";
     // @ts-ignore
 
     //console.log(new Number(valorTransacaoValidacao.value.replace('R$ ', '').replace(/\./g, '').replace(',', '.')) <= 0);
@@ -242,69 +242,90 @@ export class NewTransferComponent implements OnInit {
 
     // @ts-ignore
     //Validação do Valor
-    if(new Number(valorTransacaoValidacao.value.replace('R$ ', '').replace(/\./g, '').replace(',', '.')) <= 0)
-    {
-    this.createNotification('error', 'Insira um valor');
-    return
+    if (
+      new Number(
+        // @ts-ignore
+        valorTransacaoValidacao.value
+          .replace("R$ ", "")
+          .replace(/\./g, "")
+          .replace(",", ".")
+      ) <= 0
+    ) {
+      this.createNotification("error", "Insira um valor");
+      return;
     }
 
-
-
     for (let key in this.f) {
-      if (!!this[key] && this[key].errors != null) return
+      if (!!this[key] && this[key].errors != null) return;
     }
 
     this.confirmModal = this.modal.confirm({
-
-      nzTitle: 'Deseja prosseguir com a seguinte transferência?',
+      nzTitle: "Deseja prosseguir com a seguinte transferência?",
       nzContent: contentTemplate,
       nzOnOk: () => {
-        const valorTransacao = document.getElementById('currency-field')
+        const valorTransacao = document.getElementById("currency-field");
 
-        this.registerForm.value['nrCnpjCpfFavorecido'] = this.unFormat(this.registerForm.value['nrCnpjCpfFavorecido'])
+        this.registerForm.value["nrCnpjCpfFavorecido"] = this.unFormat(
+          this.registerForm.value["nrCnpjCpfFavorecido"]
+        );
         // @ts-ignore
-        this.registerForm.value['valorTransferencia'] = new Number(valorTransacao.value.replace('R$ ', '').replace(/\./g, '').replace(',', '.'))
+        this.registerForm.value["valorTransferencia"] = new Number(
+          // @ts-ignore
+          valorTransacao.value
+            .replace("R$ ", "")
+            .replace(/\./g, "")
+            .replace(",", ".")
+        );
 
-        const nrBancoFavorecido = this.registerForm.value['nrBancoFavorecido']
-        this.registerForm.value['dataTransferencia'] = new Date(this.registerForm.value['dataTransferencia']).getTime()
+        const nrBancoFavorecido = this.registerForm.value["nrBancoFavorecido"];
+        this.registerForm.value["dataTransferencia"] = new Date(
+          this.registerForm.value["dataTransferencia"]
+        ).getTime();
 
-        this.registerForm.value['nrBancoFavorecido'] = this.registerForm.value['nrBancoFavorecido'].codigoBanco
+        this.registerForm.value["nrBancoFavorecido"] = this.registerForm.value[
+          "nrBancoFavorecido"
+        ].codigoBanco;
 
         try {
-          return new Promise(async (resolve) => {
+          return new Promise(async resolve => {
             try {
               const transfer = await this.transferService
-                .insert(this.registerForm.value).toPromise()
+                .insert(this.registerForm.value)
+                .toPromise();
 
-              this.transfer = transfer['data'];
+              this.transfer = transfer["data"];
 
               this.data_detail.push(new ModelDataTransferDetail(this.transfer));
-            }catch (e) {
-              setTimeout( ()=>{
-                this.createNotification('error', 'Ops...', 'Não foi possível executar a tranferência. Tente novamente mais tarde')
-              },1000)
-            }finally {
-              resolve()
+            } catch (e) {
+              setTimeout(() => {
+                this.createNotification(
+                  "error",
+                  "Ops...",
+                  "Não foi possível executar a tranferência. Tente novamente mais tarde"
+                );
+              }, 1000);
+            } finally {
+              resolve();
             }
-          })
+          });
         } catch (e) {
-          alert()
-          return new Promise((resolve)=>{
-            resolve()
-            setTimeout( ()=>{
-              this.createNotification('error', 'Ops...', 'Não foi possível executar a tranferência. Tente novamente mais tarde')
-            },1000)
-          })
-          console.log(e)
-        } finally{
-          this.registerForm.value['nrBancoFavorecido'] = nrBancoFavorecido
+          alert();
+          return new Promise(resolve => {
+            resolve();
+            setTimeout(() => {
+              this.createNotification(
+                "error",
+                "Ops...",
+                "Não foi possível executar a tranferência. Tente novamente mais tarde"
+              );
+            }, 1000);
+          });
+          console.log(e);
+        } finally {
+          this.registerForm.value["nrBancoFavorecido"] = nrBancoFavorecido;
         }
       }
-
-    })
-
-
-
+    });
   }
 
   /* ----------------------------------------------------------  */
@@ -330,8 +351,6 @@ export class NewTransferComponent implements OnInit {
 
     // get input value
     let input_val = input.target.value;
-
-
 
     // don't validate empty input
     if (input_val === "") {
@@ -418,76 +437,72 @@ export class NewTransferComponent implements OnInit {
     input.target.setSelectionRange(caret_pos, caret_pos);
   }
 
-
-  cpf_cnpj = '';
-  DECIMAL_SEPARATOR=".";
-  GROUP_SEPARATOR=",";
+  cpf_cnpj = "";
+  DECIMAL_SEPARATOR = ".";
+  GROUP_SEPARATOR = ",";
   pureResult: any;
   maskedId: any;
   val: any;
   v: any;
 
-
-
-format() {
-  const valString = this.registerForm.value['nrCnpjCpfFavorecido'];
+  format() {
+    const valString = this.registerForm.value["nrCnpjCpfFavorecido"];
 
     if (!valString) {
-        return '';
+      return "";
     }
     let val = valString.toString();
     const parts = this.unFormat(val).split(this.DECIMAL_SEPARATOR);
     this.pureResult = parts;
 
-    if(parts[0].length <= 11){
-
+    if (parts[0].length <= 11) {
       this.maskedId = this.cpf_mask(parts[0]);
 
       return this.maskedId;
-    }else{
-
+    } else {
       this.maskedId = this.cnpj(parts[0]);
 
       return this.maskedId;
     }
-};
-
-unFormat(val) {
-  if (!val) {
-      return '';
   }
-  val = val.replace(/\D/g, '');
 
-  if (this.GROUP_SEPARATOR === ',') {
-      return val.replace(/,/g, '');
-  } else {
-      return val.replace(/\./g, '');
+  unFormat(val) {
+    if (!val) {
+      return "";
+    }
+    val = val.replace(/\D/g, "");
+
+    if (this.GROUP_SEPARATOR === ",") {
+      return val.replace(/,/g, "");
+    } else {
+      return val.replace(/\./g, "");
+    }
   }
-};
 
-cpf_mask(v) {
-  v = v.replace(/\D/g, ''); //Remove tudo o que não é dígito
-  v = v.replace(/(\d{3})(\d)/, '$1.$2'); //Coloca um ponto entre o terceiro e o quarto dígitos
-  v = v.replace(/(\d{3})(\d)/, '$1.$2'); //Coloca um ponto entre o terceiro e o quarto dígitos
-  //de novo (para o segundo bloco de números)
-  v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); //Coloca um hífen entre o terceiro e o quarto dígitos
-  return v;
-}
+  cpf_mask(v) {
+    v = v.replace(/\D/g, ""); //Remove tudo o que não é dígito
+    v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
+    v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
+    //de novo (para o segundo bloco de números)
+    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); //Coloca um hífen entre o terceiro e o quarto dígitos
+    return v;
+  }
 
-cnpj(v) {
-  v = v.replace(/\D/g, ''); //Remove tudo o que não é dígito
-  v = v.replace(/^(\d{2})(\d)/, '$1.$2'); //Coloca ponto entre o segundo e o terceiro dígitos
-  v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3'); //Coloca ponto entre o quinto e o sexto dígitos
-  v = v.replace(/\.(\d{3})(\d)/, '.$1/$2'); //Coloca uma barra entre o oitavo e o nono dígitos
-  v = v.replace(/(\d{4})(\d)/, '$1-$2'); //Coloca um hífen depois do bloco de quatro dígitos
-  return v;
-}
+  cnpj(v) {
+    v = v.replace(/\D/g, ""); //Remove tudo o que não é dígito
+    v = v.replace(/^(\d{2})(\d)/, "$1.$2"); //Coloca ponto entre o segundo e o terceiro dígitos
+    v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3"); //Coloca ponto entre o quinto e o sexto dígitos
+    v = v.replace(/\.(\d{3})(\d)/, ".$1/$2"); //Coloca uma barra entre o oitavo e o nono dígitos
+    v = v.replace(/(\d{4})(\d)/, "$1-$2"); //Coloca um hífen depois do bloco de quatro dígitos
+    return v;
+  }
 
-validateCPF(cpf) {
-  cpf = cpf.replace(/[^\d]+/g, '');
-  if (cpf == '') return false;
-  // Elimina CPFs invalidos conhecidos
-  if (cpf.length != 11 ||
+  validateCPF(cpf) {
+    cpf = cpf.replace(/[^\d]+/g, "");
+    if (cpf == "") return false;
+    // Elimina CPFs invalidos conhecidos
+    if (
+      cpf.length != 11 ||
       cpf == "00000000000" ||
       cpf == "11111111111" ||
       cpf == "22222222222" ||
@@ -497,38 +512,29 @@ validateCPF(cpf) {
       cpf == "66666666666" ||
       cpf == "77777777777" ||
       cpf == "88888888888" ||
-      cpf == "99999999999")
+      cpf == "99999999999"
+    )
       return false;
-  // Valida 1o digito
-  var add = 0;
-  for (var i = 0; i < 9; i++)
-      add += parseInt(cpf.charAt(i)) * (10 - i);
-  var rev = 11 - (add % 11);
-  if (rev == 10 || rev == 11)
-      rev = 0;
-  if (rev != parseInt(cpf.charAt(9)))
-      return false;
-  // Valida 2o digito
-  add = 0;
-  for (var i = 0; i < 10; i++)
-      add += parseInt(cpf.charAt(i)) * (11 - i);
-  rev = 11 - (add % 11);
-  if (rev == 10 || rev == 11)
-      rev = 0;
-  if (rev != parseInt(cpf.charAt(10)))
-      return false;
-  return true;
+    // Valida 1o digito
+    var add = 0;
+    for (var i = 0; i < 9; i++) add += parseInt(cpf.charAt(i)) * (10 - i);
+    var rev = 11 - (add % 11);
+    if (rev == 10 || rev == 11) rev = 0;
+    if (rev != parseInt(cpf.charAt(9))) return false;
+    // Valida 2o digito
+    add = 0;
+    for (var i = 0; i < 10; i++) add += parseInt(cpf.charAt(i)) * (11 - i);
+    rev = 11 - (add % 11);
+    if (rev == 10 || rev == 11) rev = 0;
+    if (rev != parseInt(cpf.charAt(10))) return false;
+    return true;
+  }
+
+  createNotification(
+    type: string,
+    title: string = "Ops..",
+    content: string = ""
+  ): void {
+    this.notification.create(type, title, content);
+  }
 }
-
-
-
-createNotification(type: string, title: string = 'Ops..', content: string = ''): void {
-  this.notification.create(
-    type,
-    title,
-    content
-  );
-}
-
-}
-

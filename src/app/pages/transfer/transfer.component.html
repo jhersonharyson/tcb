@@ -49,19 +49,20 @@
               <a
                 href=""
                 class="btn btn-sm btn-primary"
-                style="border: 0; border-radius: 20px; padding: 2px; padding-left: 8px; padding-right: 8px; "
+                style="border: 0; border-radius: 20px; padding: 2px; padding-left: 8px; padding-right: 8px; overflow: hidden; transition: .5s;"
+                [style.width]="!!modalData ? '27px' : '105px'"
               >
-                <i class="fa fa-sync"></i>
-                {{ modalData == null ? "ATUALIZAR" : "" }}
+                <i class="fa fa-sync" style="margin-right: 5px;"></i>
+                ATUALIZAR
               </a>
               <a
                 routerLink="new-transfer"
                 class="btn btn-sm btn-primary"
-                style="border: 0; border-radius:
-                20px; padding: 2px; padding-left: 8px; padding-right: 8px;"
+                style="border: 0; border-radius: 20px; padding: 2px; padding-left: 8px; padding-right: 8px; overflow: hidden; transition: .5s;"
+                [style.width]="!!modalData ? '27px' : '170px'"
               >
-                <i class="fa fa-plus"></i>
-                {{ modalData == null ? "TRANSFERIR" : "" }}
+                <i class="fa fa-plus" style="margin-right: 5px;"></i>
+                NOVA TRANSFERÊNCIA
               </a>
             </div>
           </div>
@@ -152,6 +153,41 @@
               </h2>
             </div>
           </div>
+          <nz-steps nzLabelPlacement="vertical" nzSize="small">
+            <nz-step
+              nzDescription="Pendente"
+              [nzStatus]="
+                getIconProgress('PENDENTE', modalData.situacaoTransferencia)
+              "
+              nzIcon="minus-circle"
+            ></nz-step>
+            <nz-step
+              class="icon-error"
+              [nzDescription]="
+                modalData.situacaoTransferencia != 'RECUSADO'
+                  ? 'Processando'
+                  : 'Recusado'
+              "
+              [nzStatus]="
+                getIconProgress('PROCESSANDO', modalData.situacaoTransferencia)
+              "
+              [nzIcon]="
+                modalData.situacaoTransferencia != 'RECUSADO'
+                  ? 'loading'
+                  : icon_error
+              "
+            ></nz-step>
+            <ng-template #icon_error>
+              <i nzType="close-circle"></i>
+            </ng-template>
+            <nz-step
+              nzDescription="Concluido"
+              [nzStatus]="
+                getIconProgress('CONCLUIDO', modalData.situacaoTransferencia)
+              "
+              nzIcon="check-circle"
+            ></nz-step>
+          </nz-steps>
         </div>
         <div
           class="card-body"
